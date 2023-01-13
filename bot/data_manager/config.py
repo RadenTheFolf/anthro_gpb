@@ -14,3 +14,8 @@ def get_discord_key():
 def get_role_channel():
     f = open('bot/data_manager/config.json')
     return json.load(f)["Channels"]["Roles"]
+
+
+def get_database_name():
+    f = open('bot/data_manager/config.json')
+    return json.load(f)["Database"]["Name"]
