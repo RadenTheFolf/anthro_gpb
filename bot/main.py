@@ -2,7 +2,6 @@ import chatgpt
 import discord
 
 from discord.ext import commands
-from bot.level_manager import leveling
 from bot.data_manager import config
 
 intents = discord.Intents.default()
@@ -47,32 +46,6 @@ async def on_message(message):
         await message.channel.send(chatgpt.get_ai_response(message.content)['choices'][0]['text'])
     if message.author == bot.user:
         return
-
-    message_xp = leveling.message_value(message.content)
-    print(message_xp)
-    leveling.add_user_xp(message.author, message_xp)
-    has_ranked_up, current_rank = leveling.update_user_level(message.author)
-    if has_ranked_up:
-        roles = message.guild.roles
-        if current_rank > 1:
-
-            for role in roles:
-                if role.name == "Rank {0}".format(current_rank - 1):
-                    await message.author.remove_roles(role)
-                if role.name == "Rank {0}".format(current_rank):
-                    await message.author.add_roles(role)
-        else:
-            for role in roles:
-                if role.name == "Rank {0}".format(current_rank):
-                    await message.author.add_roles(role)
-
-        embed = discord.Embed()
-        embed.title = "{0} has reached Rank {1}".format(message.author.display_name, current_rank)
-        embed.set_thumbnail(url=leveling.images[current_rank])
-        embed.set_image(url=message.author.display_avatar.url)
-        embed.colour = 0x00f7ff
-        embed.description = "Congratulations {0}".format(message.author.display_name)
-        await bot.get_channel(1062385845790834820).send(content=message.author.mention, embed=embed)
 
 
 bot.run(config.get_discord_key())

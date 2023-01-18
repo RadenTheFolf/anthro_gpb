@@ -15,7 +15,7 @@ class Word:
         self.text = text
 
 
-def get_word(word):
+def get_word(word) -> Word:
     with SqliteDict("{0}.sqlite".format(config.get_database_name()), table_name) as words:
         data = words[word]
         return db.json_to_object(data)

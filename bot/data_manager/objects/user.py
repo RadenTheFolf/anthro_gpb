@@ -28,13 +28,13 @@ class AGPBUser:
         self.JOIN_DATE = join_date
 
 
-def get_user(uid):
+def get_user(uid) -> AGPBUser:
     with SqliteDict("{0}.sqlite".format(config.get_database_name()), table_name) as users:
         user = users[uid]
         return db.json_to_object(user)
 
 
-def save_user(user: AGPBUser):
+def save_user(user: AGPBUser) -> None:
     with SqliteDict("{0}.sqlite".format(config.get_database_name()), table_name) as users:
         users[user.UID] = db.object_to_json(user)
         users.commit()
